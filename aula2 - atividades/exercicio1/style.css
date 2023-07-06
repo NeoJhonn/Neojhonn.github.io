@@ -1,0 +1,13 @@
+body {
+    background-color: aquamarine;
+}
+
+
+.main-div {
+    width: 100%;
+    display: flex;
+}
+
+.main-div div {
+    width: 40%;
+}
