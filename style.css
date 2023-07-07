@@ -23,13 +23,20 @@ header, h1, h2{
   text-align: center;
 }
 
-.div-bio p{
+.div-bio {
   display: flex;
   justify-content: center;
 }
 
 
-ul li {
+section {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  margin: 0 auto;
+}
+
+section ul li a {
   display: flex;
   justify-content: center;
 }
@@ -57,6 +64,12 @@ footer {
 
 table {
   border-collapse: collapse;
+  margin: 30px 0 100px;
+}
+
+.skills, .links, .dados {
+  margin-top: 80px;
+  margin-bottom: 80px;
 }
 
 table th, table td {
@@ -75,7 +88,7 @@ a {
 }
 
 a:hover {
-  color: #817575; /
+  color: #817575; 
   text-decoration: underline; 
 }
 
