@@ -3,4 +3,4 @@
 Links Atividade HTML, CSS e Javascript.</br> 
 </br> 
 Acesso atravez do link:</br> 
-https://neojhonn.github.io/index.html
+https://neojhonn.github.io/
