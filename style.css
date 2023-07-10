@@ -1,0 +1,21 @@
+body {
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  background-color: #55557a;
+  color:#f5f6f7;
+  font-family: Tahoma;
+  font-size: 16px;
+  padding: 2px;
+}
+
+a {
+  color: #f3ebeb; 
+  text-decoration: none; 
+  font-weight: bolder; 
+}
+
+a:hover {
+  color: #817575; 
+  text-decoration: underline; 
+}
