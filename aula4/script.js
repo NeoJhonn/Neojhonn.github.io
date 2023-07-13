@@ -79,7 +79,6 @@ function substituirLetras() {
 
 
 /* Evendo de clique aos botões */
-function inicializarPagina() {
 // Adicionar o evento de clique ao botão
 document.getElementById("botao-1").addEventListener('click', calcularMedia);
 document.getElementById("botao-2").addEventListener('click', converterCelsiusParaFahrenheit);
@@ -91,4 +90,3 @@ document.getElementById("botao-7").addEventListener('click', contarCaracteresStr
 document.getElementById("botao-8").addEventListener('click', converteStringParaMaisuculas);
 document.getElementById("botao-9").addEventListener('click', estrairTresPrimeirosCaracteres);
 document.getElementById("botao-10").addEventListener('click', substituirLetras);
-}

@@ -7,15 +7,24 @@ body {
   font-family: Tahoma;
   font-size: 16px;
   padding: 2px;
+  text-align: center;
+}
+
+h1 a {
+  color:#f5f6f7;
 }
 
 a {
-  color: #f3ebeb; 
+  color: #ccbcbc; 
   text-decoration: none; 
   font-weight: bolder; 
 }
 
 a:hover {
-  color: #817575; 
+  color: #4b4646; 
   text-decoration: underline; 
+}
+
+a:active {
+  opacity: 0.3;
 }
