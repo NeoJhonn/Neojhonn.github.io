@@ -31,11 +31,17 @@ else {
 const cep = document.getElementById('cep')
 cep.addEventListener('keypress', (event) => {
   
-  let cepValue = event.target.value
+  const inputValue = event.target.value;
+  //Expressão regular para validar o CEP (XXXXX-XXX).
+  const numericRegex = /^\d{5}-?\d{3}$/;
 
+  if (!numericRegex.test(inputValue)) {
+    //o regex /[^0-9^-]/g substitui tudo que não for letra ou caracter '-' por nulo('')
+    event.target.value = inputValue.replace(/[^0-9^-]/g, '');
+  }
   
   // concatenar o traço depois do 5º número
-  if(cepValue.length === 5 ) {
+  if(inputValue.length === 5 ) {
     cep.value += '-'
   }
 })
@@ -72,7 +78,7 @@ if (cep != "") {
       var script = document.createElement('script');
 
       //Sincroniza com o callback.
-      script.src = 'https://viacep.com.br/ws/'+ cep + '/json/?callback=meu_callback';
+      script.src = `https://viacep.com.br/ws/${cep}/json/?callback=meu_callback`;
 
       //Insere script no documento e carrega o conteúdo.
       document.body.appendChild(script);
