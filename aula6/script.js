@@ -27,7 +27,7 @@ else {
 
 
 
-// adicionar máscara ao  cep (XXXXX-XXX)
+// adicionar máscara ao cep (XXXXX-XXX)
 const cep = document.getElementById('cep')
 cep.addEventListener('keypress', (event) => {
   
