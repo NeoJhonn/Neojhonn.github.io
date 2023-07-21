@@ -2,7 +2,7 @@
 
 
 
-  const url = "http://127.0.0.1:5500/server-itens.JSON"
+  const url = "https://64ba853e5e0670a501d65019.mockapi.io/api-itens/v1/items"
 
   fetch(url)
     .then((dados) => { return dados.json() })
@@ -13,13 +13,13 @@ function montarHTML(itensMenu) {
     const divInitial = document.getElementById("div-menuItens")
     var textHtml = ""
 
-    itensMenu.items.forEach(function(item) {
+    itensMenu.map(function(item) {//usando map para percorrer o array de itens
         textHtml += 
         `<div class="span4 itens-menu" data-category="${item.categoria}">
         <h2>${item.nome}</h2>
         <p>${item.descricao}</p>
         <img src="assets/${item.imagem}" style="margin-bottom: 8px; width: 55px; border-radius: 10px">
-        <div><p>Valor: R$ ${item.valor.replace(".", ",")}</p></div>
+        <div><p><strong>Valor: R$ ${item.valor.replace(".", ",")}</strong></p></div>
         <div><input type="number" name="qtd-${item.id}" style="width: 88px;"></div>
         <p><a class="btn" href="#" onclick='fazerPedido(${JSON.stringify(item)})'>Fazer Pedido</a></p>
         </div><!--/span-->`
