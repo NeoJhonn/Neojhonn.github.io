@@ -1,0 +1,10 @@
+body {
+  height: 100%;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #b9c9c7;
+}
+
+
+.inactive {
+  display: none !important;
+}
