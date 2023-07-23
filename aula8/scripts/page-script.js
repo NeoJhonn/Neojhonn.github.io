@@ -9,6 +9,8 @@
     .then((data) =>  { montarHTML(data) })
 
 
+   // <img src="assets/${item.imagem}" class="w-25 rounded-lg">
+
 function montarHTML(itensMenu) {
     const divInitial = document.getElementById("div-menuItens")
     var textHtml = ""
@@ -16,12 +18,12 @@ function montarHTML(itensMenu) {
     itensMenu.map(function(item) {//usando map para percorrer o array de itens
         textHtml += 
         `<div class="col-4 itens-menu" data-category="${item.categoria}">
-        <h2>${item.nome}</h2>
+        <h3>${item.nome}</h3>
         <p>${item.descricao}</p>
-        <img src="assets/${item.imagem}" class="w-25 rounded-lg">
+        <div class="image-container rounded-lg" style="background-image: url(assets/${item.imagem});"></div>
         <div><p><strong>Valor: R$ ${item.valor.replace(".", ",")}</strong></p></div>
-        <div><input type="number" name="qtd-${item.id}" class="form-control mb-2 w-50"></div>
-        <p><a class="btn btn-primary w-50" href="#" onclick='fazerPedido(${JSON.stringify(item)})'>Fazer Pedido</a></p>
+        <input type="number" name="qtd-${item.id}" class="form-control mb-2 w-50">
+        <button class="btn btn-primary w-50" onclick='fazerPedido(${JSON.stringify(item)})'>Fazer Pedido</button>
         </div><!--/span-->`
     })
 

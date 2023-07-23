@@ -13,35 +13,34 @@
 </head>
 <body>
   <header>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-dark mb-3">
-      <div class="container-fluid bg-dark flex-grow-1 align-items-center">
-          <a class="navbar-brand  text-white fs-3" style="margin-right: 12rem" asp-area="" asp-controller="Home" asp-action="Index" >Menu Ravin</a>
-          <button class="navbar-toggler bg-white" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+    <nav class="navbar navbar-expand-sm navbar-light bg-dark mb-3">
+      <div class="container-fluid bg-dark d-flex flex-grow-1 align-items-center">
+          <a class="navbar-brand text-white fs-3" style="margin-right: 12rem" href="#">Menu Ravin</a>
+          <button class="navbar-toggler bg-white" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
           </button>
           <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
               <ul class="navbar-nav flex-grow-1 fs-4">
-                  <li class="nav-item">
-                      <a class="nav-link text-white" style="margin-right: 2rem" href="#">Home</a>
-                  </li>
-                  <li class="nav-item">
+                <li class="nav-item">
                     <a class="nav-link text-white" style="margin-right: 2rem" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link text-white" style="margin-right: 2rem" href="#">Contato</a>
                 </li>
               </ul>
           </div>
       </div>
-  </nav>
-
+    </nav>
   </header>
 
   <main class="container-fluid">
     <div class="row">
-
+      
       <div class="col-3">
-        <div class="card p-3 list-group">
-          <h1>Categorias</h1>
-          <ul class="list-group-item list-group-item-action custom-list">
+        <div class="card p-3 list-group rounded-lg">
+          <h3>Categorias</h3>
+          <ul class="list-group-item list-group-item-action custom-list rounded-lg">
             <li class="list-group-item">Menu</li>
             <li class="list-group-item active"><a href="#" onclick="selecionarTodosItems(this)">Todos Items</a></li>
             <li class="list-group-item">Bebidas</li>
@@ -63,7 +62,7 @@
         </div>
       </div>
 
-      <div class="col-9" style="height: 25vh;">
+      <div class="col-9">
         <div class="jumbotron jumbotron-fluid bg-info text-white rounded-lg">
           <div class="container">
             <h4 class="display-4">
@@ -72,7 +71,7 @@
           </div>
         </div>
 
-        <div class="d-flex flex-wrap justify-content-around align-items-start" id="div-menuItens" style="height: 75vh; overflow: auto; z-index: 999;">
+        <div class="d-flex flex-wrap justify-content-around align-items-start" id="div-menuItens">
           <div><h1 style="text-align: center;">Utilize o menu lateral para fazer o seu pedido!</h1></div>
         </div>
           
