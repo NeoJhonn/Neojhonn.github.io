@@ -1,7 +1,4 @@
 
-
-
-
   const url = "https://64ba853e5e0670a501d65019.mockapi.io/api-itens/v1/items"
 
   fetch(url)
@@ -9,7 +6,6 @@
     .then((data) =>  { montarHTML(data) })
 
 
-   // <img src="assets/${item.imagem}" class="w-25 rounded-lg">
 
 function montarHTML(itensMenu) {
     const divInitial = document.getElementById("div-menuItens")
