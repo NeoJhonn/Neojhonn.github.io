@@ -5,6 +5,41 @@ body {
 }
 
 
+/*Animação*/
+.fade-in {
+  animation: fadein 1s;
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+    border: 2px solid #fff;
+    border-radius: 5px;
+  } to {
+    opacity: 1;
+    border: 2px solid #8dc9d4;
+    border-radius: 10px;
+  }
+}
+
+.fade-out {
+  animation: fadeout 1s;
+}
+
+@keyframes fadeout {
+  from {
+    opacity: 1;
+    border: 2px solid #8dc9d4;
+    border-radius: 5px;
+  } to {
+    opacity: 0;
+    border: 2px solid #fff;
+    border-radius: 10px;
+  }
+}
+/*Animação   ^^*/
+
+
 .inactive {
   display: none !important;
 }
