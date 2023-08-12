@@ -162,6 +162,11 @@ body {
   header {
     min-width: 40rem !important;
   }
+
+  .jumbotron {
+    padding: 5px!important;
+    
+  }
  
 }
  

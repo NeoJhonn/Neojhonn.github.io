@@ -1,34 +1,9 @@
 #!/usr/bin/env node
 
-
-/*Iniciando o WebSocket*/
-// no gitbash execulte o comando: node ravinWebSocketServer.js
-//const webSocket = new WebSocket("ws://localhost:3000")---> no console do navegador
-
-/*webSocket.onmessage = function(mensagem) {
-  var dados = JSON.parse(mensagem.data);
-  console.log(dados);
-  }; */
-
-// faça o login
-//websocket.send('{"action":"login","params":{"table":"kitchen"}}') ---> na  cozinha
-//websocket.send('{"action":"login","params":{"table":"table"}}') ---> na mesa(em dois consoles)
-//websocket.send('{"action":"statusOrder","params":{"table":"${('tableName')}", "item": "${item.id}", "status": "${item.status}"}}')
-
-
-// pra fazer um pedido
-///websocket.send('{"action":"newOrder","params":{"table":"${('tableName')}", "item": "${item.id}", "value": "${item.valor}", "quantity": "${item.quantidade}"}}')
-
-
-//const websocket = new WebSocket("ws://localhost:3000", "kitchen")---> segunda parâmetro vc escolha o cliente
-
-
-// npm i websocket / npm i http / node ravinWebSocketServer(para iniciar o servidor)
 var WebSocketServer = require('websocket').server;
 var http = require('http');
-//var fetch = import("node-fetch");
+var fetch = require("node-fetch");
 
-//var clientsConnected = [];
 var tablesConnected = [];
 var kitchenConnected = {};
 var orders = [];
@@ -83,18 +58,17 @@ wsServer.on('request', function(request) {
             try {
                 var data = JSON.parse(message.utf8Data);
             } catch (e) {
-                message = formatMessage("erro", 'Formato da mensagem inválido, as mensagens devem ser no formato JSON e devem seguir o padrão de formatação, exemplo: {"action":"nomeDoMetodo","params":{"parametro":"1"}}');
-                connection.sendUTF(message);
+                mensagem = formatMessage("erro", 'Formato da mensagem inválido, as mensagens devem ser no formato JSON e devem seguir o padrão de formatação, exemplo: {"action":"nomeDoMetodo","params":{"parametro":"1"}}');
+                connection.sendUTF(mensagem);
                 console.log('Formato da mensagem inválido, as mensagens devem ser no formato JSON e devem seguir o padrão de formatação, exemplo: {"action":"nomeDoMetodo","params":{"parametro":"1"}}');
                 return;
             }
 
             const action = data.action;
-            switch(action) {
+            switch (action) {
                 case "login":
-                    doLogin(data.params, connection);
-                    answerMessage = formatMessage("loginAnswer", 'success');
-                    console.log(answerMessage)
+                    doLogin(data.params.table, connection);
+                    answerMessage = formatMessage("loginAnswer", "success");
                     connection.sendUTF(answerMessage);
                     break;
                 case "helloKitchen":
@@ -103,7 +77,7 @@ wsServer.on('request', function(request) {
                     console.log("Mensagem enviada para a COZINHA, pela MESA " + data.params.table);
                     break;
                 case "helloClient":
-                    const tableConnection = getConnectionByTable(data.params.tableName);
+                    const tableConnection = getConnectionByTable(data.params.table);
                     message = formatMessage("helloClient", {"message": "Hello Client"});
                     tableConnection.sendUTF(message);
                     console.log("Mensagem enviada para a MESA "+ data.params.table +", pela COZINHA");
@@ -111,28 +85,25 @@ wsServer.on('request', function(request) {
                 case "newOrder":
                     const resultRequest = sendRequestOrder(data.params);
                     resultRequest
-                        .then(() => {
-                            
-                            addNewTableOrder(data.params);
-                            console.log(data)
-                            message = formatMessage("newOrder",{"table": data.params.table, "item": data.params.item, "value": data.params.value, "quantity": data.params.quantity, "status": data.params.status});
-                            console.log(message)
-                            //console.log(kitchenConnected)
+                        .then((response) => {
+                            addNewTableOrder(response);
+                            message = formatMessage("newOrder", {"table": data.params.table, "id": response.id, "item": data.params.item, "value": data.params.value, "quantity": data.params.quantity});
                             kitchenConnected.sendUTF(message);
-                            console.log("Pedido da " + data.params.table + " enviado a COZINHA");
+                            console.log("Pedido da MESA " + data.params.table + " enviado a COZINHA");
                         })
                         .catch((error) => {
-                            const messagem = formatMessage("rollBackOrder", data.params.item);
-                           // connection.send(mesagem);
+                            const mesagem = formatMessage("rollBackOrder", data.params.item);
+                            connection.send(mesagem);
                             console.log(error);
-                            console.log(messagem);
-                        });
-                        break;
-                case "statusOrder":
-                    const tableConnectionStatus = getConnectionByTable(data.params.tableName);
-                    message = formatMessage("statusOrder", {"tableName": data.params.tableName, "item": data.params.item, "status": data.params.status, "quantity": data.params.quantity});
-                    tableConnectionStatus.sendUTF(message);
+                        })
+                    ;
+                    break;
+                case "alterStatusOrder":
+                    const tableConnectionStatus = getConnectionByTable(data.params.table);
+                    answerMessage = formatMessage("statusOrder", {"status": data.params.status, "item": data.params.item});
+                    tableConnectionStatus.sendUTF(answerMessage);
                     console.log("Alterando status pedido para "+ data.params.status);
+                    console.log(data.params.table);
                     break;
             }
         }
@@ -150,22 +121,16 @@ function getIndexByConnection(connection) {
   return index;
 }
 
-
-
 function getConnectionByTable(tableName) {
-    let index = 0
-    for (table of tablesConnected) {
-        
-        if (table['table'] === tableName) {
-            return table;
+    for (tableConnected of tablesConnected) {
+        if (tableConnected['table'] == tableName) {
+            return tableConnected;
         }
-        index ++
     }
 }
 
 async function sendRequestOrder(order) {
-    console.log(order)
-    const urlAPI = "https://64ba853e5e0670a501d65019.mockapi.io/ravin-menu/orders";
+    const urlAPI = "https://64c7005c0a25021fde9207d4.mockapi.io/ravin/orders";
     const request = await fetch(urlAPI, {
         method: "POST",
         headers: {
@@ -189,50 +154,38 @@ function doLogin(table, connection) {
         connection.sendUTF(mensagem);
         console.log('Erro ao efetuar login, MESA ' + table);
     } else {
-        if (table.table === "kitchen") {
+        if (table === "kitchen") {
             kitchenConnected = connection;
-            console.log("Cozinha online")
+            console.log('Cozinha online');
         } else {
-            if (table.table === "table"){
-            tablesConnected[index]['table'] = table.tableName;
-            console.log(table.tableName + " online");
-            } 
+            tablesConnected[index]['table'] = table;
+            console.log('Mesa online ' + table);
         }
-
-        
     }
 }
 
-function 
-formatMessage(action, data) {
+function formatMessage(action, data) {
 	
-    let mensagem;
+    let message;
 
     switch(action) {
         case 'erro':
-            //
         case 'loginAnswer':
-            mensagem = {"action":action,"params":{"msg":data}};
+            message = {"action": action, "params": {"msg": data}};
             break;
         case 'helloKitchen':
-            //
         case 'helloClient':
-            mensagem = {"action": action, "params": {"table": data.table, "msg": data.message}}
+            message = {"action": action, "params": {"table": data.table, "msg": data.message}}
             break;
         case 'newOrder':
-            mensagem = {"action": action, "params": data};
-            break;
-        case 'statusOrder':
-            mensagem = {"action": action, "params": {"tableName": data.tableName, "item": data.item, "status": data.status, "quantity": data.quantity}};
+            message = {"action": action, "params": data};
             break;
         case 'rollBackOrder':
-            mensagem = {"action": action, "params": {"item": data}};
+            message = {"action": action, "params": {"item": data}};
             break;
+        case 'statusOrder':
+            message = {"action": action, "params": {"status": data.status, "item": data.item}};
     }
 
-    return JSON.stringify(mensagem);
+    return JSON.stringify(message);
 }
-
-
-
-

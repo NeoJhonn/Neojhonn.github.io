@@ -8,7 +8,11 @@ SOCKET.onopen = (event) => {
 };
 
 setTimeout(function() {
+  if (localStorage.getItem("tableName") !== null) {
   verificarNomeMesa();
+  } else {
+    alert("Cadaste uma Mesa Primeiro!")
+  }
 
   SOCKET.onmessage = function(mensagem) {
     var dados = JSON.parse(mensagem.data);
@@ -84,7 +88,7 @@ function fazerPedido(item) {
       // Se confirmar o pedido
       if (confirmado) {
         // enviar pedido via web
-        SOCKET.send(`{"action":"newOrder","params":{"table":"${JSON.parse(localStorage.getItem('tableName'))}", "item": "${item.nome}", "value": ${item.valor}, "quantity": ${item.quantidade}, "status": "Solicitado"}}`);
+        SOCKET.send(`{"action":"newOrder","params":{"table":${localStorage.getItem('tableName')}, "item": "${item.nome}", "value": ${item.valor}, "quantity": ${item.quantidade}, "status": "Solicitado"}}`);
         //salvar o status do pedido
         localStorage.setItem("orderStatus", "Solicitado") 
         
@@ -216,7 +220,7 @@ function gerenciarMesa(nomeMesa) {
   } 
 
   const textoNomeMesa = document.getElementById("nomeMesa")
-  textoNomeMesa.textContent = nomeMesa.replaceAll('"','');
+  textoNomeMesa.textContent = JSON.parse(nomeMesa);
 }
 
 function verificarNomeMesa() {
@@ -275,12 +279,12 @@ function fecharComanda() {
   alert("Comanda fechada com sucesso!")
 }
 
-function connectToAPI(itemsToDelete) {
+async function connectToAPI(itemsToDelete) {
 
-  itemsToDelete.map(function(item) {//usando map para percorrer os itens
+  itemsToDelete.map(await function(item) {//usando map para percorrer os itens
   // Limpar a api de orders do mockApi
    const url= "https://64ba853e5e0670a501d65019.mockapi.io/ravin-menu/orders";
-   fetch(`${url}/${item.id}`, {
+    fetch(`${url}/${item.id}`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json'
